@@ -63,14 +63,68 @@
 
 % Probably something about github here
 
-
-
 \section{Cloning a Repo}
+
+% git clone <repository location>
+% at this point, it's basically just like downloading a tarball, because it's file-based
+% an advantage of git: don't need to compile tarball, tags, partial pull
+% may run into submodules
 
 \section{Making Changes}
 
+% Always branch first, because
+% - it's a good habit
+% - the last good state is labelled (often as master)
+% - can go back to another branch even if you're in the middle of something
+% - can update master w/o a merge conflicting with current changes
+% - branches are cheap!
+%
+% Next, Make your changes
+% - edit things however you like
+% - it's best to use `git rm` or `git mv` for file manipulation
+%
+% Stage files:
+% - git add <file>
+%
+% Check Status:
+% - git status
+%
+% Commit:
+% - git add <file>; git commit ... or git commit -a
+% - commits should be small, and non-breaking (if possible)
+% - best to keep one commit to one feature/bugfix
+% - recommend not using the `-m` option, because of bash history
+
 \section{Starting Your Own}
+
+% Typical case:
+% - start coding
+% - git init
+% - create a remote repo
+% - add the remote as origin
+% - push --set-upstream
+%
+% With Foresight:
+% - create a repo (on github)
+% - clone that repo to your machine
+% - start coding
 
 \section{Version Control}
 
+% What's this HEAD thing, and all those numbers? (commit hash)
+% Tagging
+% master branch
+% undoing changes that haven't been committed
+% going back a bit further (HEAD~1)
+
 \section{In Practice}
+
+% - `git status` will tell you most of what you need (it suggests commands)
+% - create an alias for glog
+% - search for how to do things on google
+% - forking and pull requests
+% - github
+% - git stash & git stash pop (made changes but forgot to branch)
+% - for your own project, it should be more linear
+% - delete your old branches (after they're merged back in)
+% - `git commit --amend` to fix that last commit
