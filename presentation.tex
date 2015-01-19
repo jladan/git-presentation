@@ -43,7 +43,7 @@
 
 \begin{frame}
     \frametitle{According to git-scm.com}
-    \includegraphics{figures/git-homepage}
+    \includegraphics[width=.8\textwidth]{figures/git-homepage}
 \end{frame}
 
 \begin{frame}
@@ -65,11 +65,52 @@
                 \item do not need network access
             \end{itemize}
         \item Ubiquitous
-        \item Good \em{free} repository hosting (github)
+        \item Good \emph{free} repository hosting (github)
+    \end{itemize}
+\end{frame}
+
+\section{More detail}
+
+
+\begin{frame}
+    \frametitle{Structure of a repository}
+    \begin{itemize}
+        \item Everything is stored in files, with all the metadata (esp. history) in \texttt{.git}.
+        \item The history is structured as a Directed Acyclic Graph (DAG). It's basically just a tree where branches can join back together.
+        \item The history is (for the most part) stored as changes (diffs) between the nodes (commits). 
+    \end{itemize}
+\end{frame}
+
+% show an example of a repo here.
+
+\begin{frame}
+    \frametitle{Git Terminology}
+    A few terms to help you out.
+    \begin{itemize}
+        \item Commit: \emph{n}. A particular snapshot of the project, labelled with a unique hash.
+        \item remote: \emph{n}. A remote repository that should have the same commit history (to a point)
+        \item branch: \emph{n}. A pointer to a specific commit. When the branch is checked out, commiting changes will advance that pointer.
+        \item master: the main branch of the repository
+        \item merge: \emph{v}. The process of combining two branches
+        \item rebase: \emph{v}. cutting of a branch, and grafting it on somewhere else.
+        \item HEAD: \emph{n}. The currently checked out commit.
+        \item tag: \emph{n}. A fancy branch label that stays put, and can be signed by the author
     \end{itemize}
 \end{frame}
 
 \section{Cloning a Repo}
+
+\begin{frame}
+    \frametitle{Basic workflow}
+    \begin{itemize}
+        \item clone/create a repository
+        \item branch
+        \item make changes
+        \item commit
+        \item merge changes into main branch
+        \item push changes upstream
+    \end{itemize}
+\end{frame}
 
 \begin{frame}
     \frametitle{Git Clone}
@@ -85,7 +126,7 @@
 
 \begin{frame}
     \frametitle{Submodules}
-    Word of warning: some packages use \em{submodules}. One way to handle it:
+    Word of warning: some packages use \emph{submodules}. One way to handle it:
     \begin{command}
         \texttt{git clone --recursive <repo>}
     \end{command}
@@ -156,7 +197,7 @@
         \texttt{git add <file(s)>}
     \end{command}
     \pause
-    Often, it's good to check the \em{status} again before the next step
+    Often, it's good to check the \emph{status} again before the next step
 \end{frame}
 
 \begin{frame}
@@ -187,8 +228,38 @@
     \begin{command}
         \texttt{git commit -a}
     \end{command}
-    The \texttt{-a} flag stages \em{all} modified files, but not any untracked files.
+    The \texttt{-a} flag stages \emph{all} modified files, but not any untracked files.
 \end{frame}
+
+\begin{frame}
+    \frametitle{Merging}
+    After some commits, you'll probably want to add those changes to the main branch.
+    \begin{command}
+        \texttt{git merge <other-branch>}
+    \end{command}
+    If there are no conflicts (i.e. the commit is a direct descendent), the current branch will be fast-forwarded. This just means the pointer gets moved ahead.
+
+    If there are conflict, we have to fix them manually.
+\end{frame}
+
+\section{Sharing with others}
+
+\begin{frame}
+    \frametitle{Pushing}
+    What about sending the changes upstream?
+    \begin{command}
+        \texttt{git push [<remote-name>]}
+    \end{command}
+    \pause
+    If the remote branch has changed you'll have to pull first
+    \begin{command}
+        \texttt{git pull [<remote-name>]}
+    \end{command}
+    and then push.
+    \pause
+    Because of this, it's probably better to pull before merging your working branch. That should keep the tree of commits cleaner.
+\end{frame}
+
 
 \section{Rolling Your Own}
 
@@ -249,22 +320,118 @@
 
 \section{Version Control}
 
-% What's this HEAD thing, and all those numbers? (commit hash)
-% Tagging
-% master branch
-% undoing changes that haven't been committed
-% going back a bit further (HEAD~1)
+
+\begin{frame}
+    \frametitle{Checking out}
+    Any point in the DAG can be accessed by checking it out
+    \begin{command}
+        \texttt{git checkout <branch-name|commit-hash>}
+    \end{command}
+    This changes the working tree to be in the state of that commit. However, no untracked files are changed.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Undo! Undo!}
+    The easiest time to undo your changes is before committing them.
+    \begin{command}
+        \texttt{git checkout -- <filename>}
+    \end{command}
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Undo! Undo!}
+    But what if you didn't mean to commit that change?
+    \begin{command}
+        \texttt{git reset [--hard] HEAD\~{}1}
+    \end{command}
+    \pause
+    HEAD\~{}n is a synonym for `n commits before head'
+
+    \pause
+    \alert{Do not delete commits that are already upstream}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Git Reset}
+    The reset command actually performs a lot of different functions. It's like the `undo' of git.
+
+    It's probably a good idea to read the man-page for it
+    \begin{command}
+        \texttt{man git-reset}
+    \end{command}
+
+    There are a lot of useful recipes at the end of that document.
+\end{frame}
+
+\begin{frame}
+    \frametitle{I made a mistake in that last commit!}
+    If you made a mistake in what changes were staged or the commit message has a typo,
+    \begin{command}
+        \texttt{git commit --amend}
+    \end{command}
+    \pause
+    \alert{This creates a new commit}. Each commit is labeled by its hash, so amending a commit actually replaces it with a new one. Thus you cannot ammend commits that have already been pushed.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Tagging and Versions}
+    Saving the location in the tree of a specific version is easy
+    \begin{command}
+        \texttt{git tag <tag-name>}
+    \end{command}
+    A tag is essentially just a branch name that is fixed in place. It can also be signed by the developer, so that no one tampers with it later.
+\end{frame}
 
 \section{In Practice}
 
-% - `git status` will tell you most of what you need (it suggests commands)
-% - create an alias for glog
-% - search for how to do things on google
-% - forking and pull requests
-% - github
-% - git stash & git stash pop (made changes but forgot to branch)
-% - for your own project, it should be more linear
-% - delete your old branches (after they're merged back in)
-% - `git commit --amend` to fix that last commit
+\begin{frame}
+    \frametitle{What you'll use a lot}
+    \begin{itemize}
+        \item git status: tells you where you are, and what commands you might want to use
+        \item git log: tells you where everything is (reminder: git glog)
+        \item git commit
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Getting Help}
+    There are 3 main sources of help for git:
+    \begin{itemize}
+        \item git status
+        \item man pages: man git-<command>
+        \item google
+    \end{itemize}
+    Github is also good at telling you the commands to do various things
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Other functions}
+    Stashing can be quite useful when you haven't branched
+    \begin{command}
+        \texttt{git stash \\ ... \\ git stash pop}
+    \end{command}
+
+    \pause
+    Rebasing can help keep the graph clean
+    \begin{command}
+        \texttt{git rebase <new-root>}
+    \end{command}
+    You can combine and reorder commits in this process too. However, some people frown on this practice, because it doesn't accurately track the history.
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{A few other things}
+    \begin{itemize}
+        \item You'll have to delete the old branch names from time to time
+        \item To contribute to other projects, you'll likely need to do a `pull request'
+        \item You should always have a license and readme file
+        \item Keep a clean setup with \texttt{.gitignore}
+    \end{itemize}
+\end{frame}
 
 \end{document}
