@@ -179,7 +179,7 @@
 
 \begin{frame}
     \frametitle{Seeing your changes}
-    First, it's a good idea to see what changes you made
+    Before committing, it's a good idea to see what changes you made
     \begin{command}
         \texttt{git status}
     \end{command}
@@ -235,7 +235,7 @@
     \frametitle{Merging}
     After some commits, you'll probably want to add those changes to the main branch.
     \begin{command}
-        \texttt{git merge <other-branch>}
+        \texttt{git checkout master \\ git merge <other-branch>}
     \end{command}
     If there are no conflicts (i.e. the commit is a direct descendent), the current branch will be fast-forwarded. This just means the pointer gets moved ahead.
 
@@ -262,6 +262,14 @@
 
 
 \section{Rolling Your Own}
+
+\begin{frame}
+    \frametitle{Rolling your own}
+    \begin{itemize}
+        \item What normally happens.
+        \item What ideally happens.
+    \end{itemize}
+\end{frame}
 
 \begin{frame}
     \frametitle{Typical Case}
@@ -320,6 +328,10 @@
 
 \section{Version Control}
 
+\begin{frame}
+    \frametitle{Version Control}
+    Now for the reasons \emph{why} we actually go through all this effort.
+\end{frame}
 
 \begin{frame}
     \frametitle{Checking out}
@@ -407,6 +419,10 @@
     Github is also good at telling you the commands to do various things
 \end{frame}
 
+\begin{frame}
+    \frametitle{github example}
+    \includegraphics[height=.08\textheight]{figures/creating-on-github}
+\end{frame}
 
 \begin{frame}
     \frametitle{Other functions}
